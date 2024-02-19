@@ -2,11 +2,11 @@ import os
 from source.constant import constant_train
 from datetime import datetime
 class TrainingPipelineConfig:
-    def __init__(self,timestamp=datetime.now()):
-        timestamp=timestamp.strftime("%m_%d_%Y_%H_%M_%S")
+    def __init__(self,global_timestamp):
+        self.global_timestamp = global_timestamp
         self.target_column = constant_train.TARGET_COLUMN
         self.train_pipeline_name = constant_train.TRAIN_PIPELINE_NAME
-        self.artifact_dir = os.path.join(constant_train.ARTIFACT_DIR,timestamp)
+        self.artifact_dir = os.path.join(constant_train.ARTIFACT_DIR,global_timestamp)
         self.di_dir = os.path.join(self.artifact_dir,constant_train.DI_DIR)
         self.feature_store_dir = os.path.join(self.di_dir,constant_train.DI_FEATURE_STORE_DIR,constant_train.FILE_NAME)
         self.train_file_name = os.path.join(self.di_dir,constant_train.DI_INGESTED_DIR,constant_train.TRAIN_FILE_NAME)

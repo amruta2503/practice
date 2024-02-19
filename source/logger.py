@@ -1,14 +1,17 @@
 import logging
-from datetime import datetime
+from source.constant.constant_train import ARTIFACT_DIR
 import os
 
-LOG_FILE = f"{datetime.now().strftime('%m_%d_%Y_%H_%M_%S')}.log"
-logs_path = os.path.join(os.getcwd(),"logs",LOG_FILE)
-os.makedirs(logs_path,exist_ok=True)
+def setup_logger(global_timestamp):
 
-LOG_FILE_PATH = os.path.join(logs_path,LOG_FILE)
+    LOG_FILE = f"{global_timestamp}.log"
+    logs_path = os.path.join(os.getcwd(),ARTIFACT_DIR+"/"+global_timestamp+"/log")
+    os.makedirs(logs_path,exist_ok=True)
 
-logging.basicConfig(
-    filename=LOG_FILE_PATH,
-    format= "[%(asctime)s] %(line_no)d %(name)s-%(levelname)s-%(message)s"
-)
+    LOG_FILE_PATH = os.path.join(logs_path,LOG_FILE)
+
+    logging.basicConfig(
+        filename=LOG_FILE_PATH,
+        format= "[%(asctime)s] %(lineno)d %(levelname)s-%(message)s",
+        level=logging.INFO
+    )
