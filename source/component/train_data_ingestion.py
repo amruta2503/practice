@@ -52,6 +52,29 @@ class DataIngestion:
         except ChurnException as e:
             raise e
 
+    def clean_data(self,data):
+        try:
+            logging.info("start:data clean")
+
+            data = data.drop_duplicates()
+
+            drop_column = []
+
+            data = data.loc[:,data.nunique()>1]
+
+            for col in data.select_dtypes(include="object").columns:
+                unique_count = data[col].nunique()
+
+                if unique_count/len(data)>0.5:
+                    data.drop(col,axis=1,inplace=True)
+                    drop_column.append(col)
+
+            logging.info("complete:data clean")
+            return data
+        except ChurnException as e:
+            raise e
+
     def initiate_data_ingestion(self):
         data=self.export_data_into_feature_store()
+        data=self.clean_data(data)
         self.split_data_train_test(data)
